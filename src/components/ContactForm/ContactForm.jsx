@@ -1,64 +1,65 @@
-
 import css from './ContactForm.module.css'
-import React, { Component } from "react";
 import { nanoid } from "nanoid";
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
+import { useState } from 'react';
 
-class ContactForm extends Component {
-  state = {
-    name: "",
-    number: "",
+const ContactForm = ({ onAddContact }) => {
+  
+  const [name, setName] = useState('')
+  const [number, setNumber] = useState('')
+
+  let nameInputId = nanoid();
+  let numberInputId = nanoid();
+
+  const handleChangeName = ({target}) => {
+    setName((prevName) => prevName = target.value)
   };
 
-  nameInputId = nanoid();
-  numberInputId = nanoid();
-
-  handleChange = (e) => {
-    this.setState({ [e.currentTarget.name]: e.currentTarget.value });
+  const handleChangeNumber = ({ target }) => {
+    setNumber((prevNumber) => prevNumber = target.value)
   };
 
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    const { name, number } = this.state;
-    this.props.onAddContact(name, number);
+    onAddContact(name, number);
 
-    this.setState({ name: "", number: "" });
+    setName((prevName) => prevName = "")
+    setNumber((prevNumber) => prevNumber = "")
+
   };
 
-  render() {
-    return (
-      <form className={css.form} onSubmit={this.handleSubmit}>
-        <label className={css.lable} htmlFor={this.nameInputId}>Name</label>
-        <input 
-          className={css.input}
-          type="text"
-          name="name"
-          required
-          value={this.state.name}
-          onChange={this.handleChange}
-          id={this.nameInputId}
-        />
 
-        <label className={css.lable} htmlFor={this.numberInputId}>Number</label>
-        <input
-          className={css.input}
-          type="tel"
-          name="number"
-          required
-          value={this.state.number}
-          onChange={this.handleChange}
-          id={this.numberInputId}
-        />
-        <button type="submit">Add contact</button>
-      </form>
-    );
-  }
+  return (
+    <form className={css.form} onSubmit={handleSubmit}>
+      <label className={css.lable} htmlFor={nameInputId}>Name</label>
+      <input 
+        className={css.input}
+        type="text"
+        name="name"
+        required
+        value={name}
+        onChange={handleChangeName}
+        id={nameInputId}
+      />
+
+      <label className={css.lable} htmlFor={numberInputId}>Number</label>
+      <input
+        className={css.input}
+        type="tel"
+        name="number"
+        required
+        value={number}
+        onChange={handleChangeNumber}
+        id={numberInputId}
+      />
+      <button type="submit">Add contact</button>
+    </form>
+  );
 }
 
 export default ContactForm;
 
-// ContactForm.propTypes = {
-//   name: PropTypes.string.isRequired,
-//   number: PropTypes.string.isRequired,
-// }
+ContactForm.propTypes = {
+  onAddContact: PropTypes.func.isRequired,
+}

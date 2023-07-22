@@ -2,6 +2,8 @@ import React from "react";
 import { nanoid } from 'nanoid'
 import css from './ContactList.module.css'
 import PropTypes from "prop-types";
+
+
 const ContactList = ({ contacts, deleteContact }) => {
   return (
     <ul className={css.list}>
